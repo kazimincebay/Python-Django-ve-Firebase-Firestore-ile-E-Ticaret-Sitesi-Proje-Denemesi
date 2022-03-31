@@ -1,0 +1,38 @@
+{% extends "manage/fix-parts/layout.html" %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategori Listeleme Sayfası</title>
+</head>
+<body>
+    {% csrf_token %}
+    <table class="mx-auto">
+        <tr>
+            <th>Kategori Adı</th>
+            <th>Güncelle</th>
+            <th>Sil</th>
+            
+        </tr>
+{% for category in categorylist %}
+<tr>
+    <td>{{category.categoryname}}</td>
+    <td><form action="/manage/updatecategory/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="categoryname" value="{{category.categoryname}}">
+        <input type="submit" value="Güncelle">
+    </form></td>
+    <td><form action="/manage/deletecategory/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="categoryname" value="{{category.categoryname}}">
+        <input type="submit" value="Sil">
+    </form></td>
+</tr>
+{% endfor %}
+</table>
+</body>
+</html>
+{% endblock %}

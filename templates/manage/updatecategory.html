@@ -1,0 +1,26 @@
+{% extends "manage/fix-parts/layout.html" %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% csrf_token %}
+    <form action="/manage/updateCategory/" method="post" style="text-align: center;">
+        {% csrf_token %}
+        {% for per in categorylist %}
+        <input type="hidden" name="categoryname" value="{{per.categoryname}}">
+           Güncellenecek Kategori Adı : {{per.categoryname}}
+        {% endfor %}    <br>
+         Yeni Kategori Adı : <input type="text" name="newcategoryname" required>
+         <input type="submit" value="Güncelle">
+
+    </form>
+    
+</body>
+</html>
+{% endblock %}

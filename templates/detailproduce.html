@@ -1,0 +1,110 @@
+{% extends "fix-parts/layout.html" %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Listeleme</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            {% for per in producelist %}
+            <img src="{{per.produceImageURL}}" alt="produceImage" class="img-fluid">
+          </div>
+          <div class="col-md-6">
+            <h2 class="text-black">{{per.produceName}}</h2>
+            <p>{{per.produceDescription}}</p>
+            
+            <p><strong class="text-primary h4">{{per.producePrice}} ₺</strong></p>
+            <div class="mb-1 d-flex">
+              Kategori : {{per.produceCategory}} <br>
+               
+            </div>
+            <div class="mb-5">
+                Ürün Kodu :  {{per.produceCode }} 
+            </div>
+
+            
+
+                    {% if user.is_authenticated%}
+                    <input type="hidden" name="produceCode" id="producecode" value="{{per.produceCode}}">
+                    <input type="hidden" name="useremail" id="username" value="{{user.username}}">
+                    <input  class="buy-now btn btn-sm btn-primary" id="addbasketbutton" value="Sepete Ekle" onclick="addbskt()">
+                  {% else %}
+                  <form action="/addBasket/" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="produceCode" id="producecode" value="{{per.produceCode}}">
+                    <input type="hidden" name="useremail" id="username" value="{{user.username}}">
+                    <button class="buy-now btn btn-sm btn-primary" id="addbasketbutton" onclick="addbasket()">Sepete Ekle</button>
+                  </form>{% endif %}
+            
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+
+function addbskt(){
+    
+    let producecode= $("#producecode").val();
+    console.log(producecode)
+    console.log($("#username").val())
+    $.ajax({
+        type: "POST",
+        url: "/addBasket/",
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        data: {
+        "produceCode":$("#producecode").val(),
+        "useremail":$("#username").val(),
+      },
+        success: function() {
+          console.log('success');
+          $("#addbasketbutton").css("background-color","#D19C97");
+          $("#addbasketbutton").css("color","#212529");
+          $("#addbasketbutton").attr("value","Sepete Eklendi");
+          $("#addbasketbutton").css("background-color","#D19C97");
+          $("#addbasketbutton").attr("value","Sepete Ekle");
+
+        }
+    });
+
+
+  }
+
+
+
+
+function addbasket(){
+  console.log($("#producecode").val());
+  const username = $("#username").val();
+  if (username==""){
+    $("#username").attr("value",localStorage.getItem('key'));
+    console.log(username);
+  }
+  else{
+    console.log (username);
+  }
+
+}
+
+
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
+{% endblock %}

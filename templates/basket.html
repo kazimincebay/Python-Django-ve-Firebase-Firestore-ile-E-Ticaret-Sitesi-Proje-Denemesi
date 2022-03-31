@@ -1,0 +1,291 @@
+{% extends "fix-parts/layout.html" %}
+{% block content%}                 
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+      <h1 class="font-weight-semi-bold text-uppercase mb-3">Sepet</h1>
+      <div class="d-inline-flex">
+          <p class="m-0"><a href="{% url 'home' %}">Anasayfa</a></p>
+          <p class="m-0 px-2">-</p>
+          <p class="m-0">Sepet</p>
+      </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Cart Start -->
+<div class="container-fluid pt-5 basket">
+  <div class="row px-xl-5 ">
+    <div class="col-lg-8 table-responsive mb-5 ">
+      <table class="table table-bordered text-center mb-0" >
+          <thead class="bg-secondary text-dark">
+              <tr>
+                  
+                  <th>Ürün</th>
+                  <th>Fiyat</th>
+                  <th>Adet</th>
+                  <th>Toplam Fiyat</th>
+                  <th>Sepetten Çıkar</th>
+              </tr>
+          </thead>
+          <tbody class="align-middle">
+            {% for per in bsktlist %}  
+            <tr>
+                  <td class="align-middle"><img src="{{per.produceImageURL}}" alt="" style="width: 50px;"> {{per.produceName}}</td>
+                  <td class="align-middle">{{per.producePrice}} ₺</td>
+                  <td class="align-middle">
+                      <div class="input-group mx-auto" style="width: 100px;">
+                         
+                        <div class="input-group-btn">
+                          {% if user.is_authenticated%} 
+                                <input type="hidden" name="producecode" class="pcode" value="{{per.produceCode}}">
+                                <input type="hidden" name="useremail" class="useremail" value="{{user.username}}">
+                                <button class="btn btn-sm btn-primary downoqq"><i class="fa fa-minus"></i></button>
+                            </div>
+                          {% else %}
+                              {% csrf_token %}
+                              <input type="hidden" name="producecode" class="pcode" value="{{per.produceCode}}">
+                              <input type="hidden" name="useremail" class="downonequantity" value="{{user.username}}">
+                              <button class="btn btn-sm btn-primary downoq"><i class="fa fa-minus"></i></button></div>{% endif %}
+  
+                          
+                          <input type="text" class="form-control form-control-sm bg-secondary text-center" value="{{per.quantity}}" readonly>
+                          
+                          {% if user.is_authenticated%}
+                              <div class="input-group-btn" id="up-div">
+                                
+                                <input type="hidden" name="producecode" class="pcode" value="{{per.produceCode}}" />
+                                <input type="hidden" name="useremail" class="uponequantity" value="{{user.username}}" />
+                                <button class="btn btn-sm btn-primary lup" ><i class="fa fa-plus"></i></button>
+                              </div>
+                          {% else %}
+                              <div>
+                              <input type="hidden" name="producecode" class="pcode" value="{{per.produceCode}}" />
+                              <input type="hidden" name="useremail" class="uponequantity" value="{{user.username}}" />
+                              <button class="btn btn-sm btn-primary upoq"><i class="fa fa-plus"></i></button></div>
+                          {% endif %}
+                            
+                        
+                      </div>
+                  </td>
+                  
+                  <td class="align-middle">{{per.totalprice}} </td>
+                  {% if user.is_authenticated %}
+                  <td class="align-middle">
+                    <input type="hidden" name="producecode" value="{{per.produceCode}}">
+                    <input type="hidden" name="useremail" value="{{user.username}}">
+                    
+                    <button class="btn btn-sm btn-primary removeu"><i class="fa fa-times"></i></button>
+                </form></td><td class="prdtd">
+                  <input type="hidden" id="prdccode" value="{{per.produceCode}}"></td>{% else %}
+                <td class="align-middle">
+                  <input type="hidden" name="producecode" value="{{per.produceCode}}">
+                  <input type="hidden" name="useremail" id="removeusername" value="{{user.username}}">
+                  <button class="btn btn-sm btn-primary removeun"><i class="fa fa-times"></i></button>
+                  
+              </td>{% endif %}
+              </tr>
+              {% endfor %}
+          </tbody >
+      </table>
+  </div>
+  <div class="col-lg-4">
+      <div class="card border-secondary mb-5">
+          <div class="card-header bg-secondary border-0">
+              <h4 class="font-weight-semi-bold m-0">Sepet Tutarı</h4>
+          </div>
+          <div class="card-body">
+              <div class="d-flex justify-content-between mb-3 pt-1">
+                  <h6 class="font-weight-medium"></h6>
+                  <h6 class="font-weight-medium"></h6>
+              </div>
+              <div class="d-flex justify-content-between">
+                  <h6 class="font-weight-medium"></h6>
+                  <h6 class="font-weight-medium"></h6>
+              </div>
+          </div>
+          <div class="card-footer border-secondary bg-transparent">
+              <div class="d-flex justify-content-between mt-2">
+                  <h5 class="font-weight-bold">Toplam Fiyat</h5>
+                  <h5 class="font-weight-bold">{{totalprice}} ₺</h5>
+              </div>
+              {% if user.is_authenticated %}
+              <form action="/checkout/">
+              <input type="submit" class="btn btn-block btn-primary my-3 py-3" value="Sepeti Onayla">
+            </form>
+            {% else %}
+            <form action="/signin/" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="userid" id="checkout" value="{{user.username}}">
+              <input type="submit" onclick="sepetonay()" class="btn btn-block btn-primary my-3 py-3" value="Sepeti Onayla">
+            </form>
+            {% endif %}
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row mb-5">
+            <div class="col-md-6 mb-3 mb-md-0">
+              {% if user.is_authenticated %}
+              <input type="hidden" value="{{user.username}}" class="uemail" name="useremail">
+              <button class="btn btn-outline-primary btn-sm btn-block clearbbb">Sepeti Temizle</button>
+              {% else %}
+              <input type="hidden" value="{{user.username}}" class="uemail" name="useremail">
+              <button class="btn btn-outline-primary btn-sm btn-block clearbb">Sepeti Temizle</button>
+              {% endif %}
+            </div>
+            <div class="col-md-6">
+              <a href="{% url 'checkproduce' %}" class="btn btn-outline-primary btn-sm btn-block">Alışverişe Devam Et</a>
+            </div>
+          </div>
+        </div>
+  </div>
+  </div>
+  </div>
+  <!-- Cart End -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script> 
+  function removeun(){
+    $("#removeusername").attr("value",localStorage.getItem('key'));
+  }
+
+  
+
+  function sepetonay(){
+    $("#checkout").attr("value",localStorage.getItem('key'));
+  }
+
+  $(".lup").click(function(){
+    $.ajax({
+        type: "POST",
+        url: "/uponequantity/",
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        data: {"producecode":$(this).parent().find(".pcode").val(),
+        "useremail":$(".uponequantity").val(),
+      },
+        success: function() {
+          window.location.assign('/basket/'+"?b="+$(".uponequantity").val());
+        }
+    });
+
+
+  })
+
+  $(".downoqq").on("click",function(){  
+    $.ajax({
+        type: "POST",
+        url: "/downonequantity/",
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        data: {"producecode":$(this).parent().find(".pcode").val(),
+        "useremail":$(".useremail").val(),
+      },
+        success: function() {
+          window.location.assign('/basket/'+"?b="+$(".useremail").val());
+        }
+    });
+
+
+  })
+
+
+
+
+  $(".clearbbb").on("click",function(){
+    console.log($(".uemail").val());
+    $.ajax({
+        type: "POST",
+        url: "/clearBasket/",
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        data: {"useremail":$(".uemail").val(),
+      },
+        success: function() {
+          window.location.assign('/basket/'+"?b="+$(".uponequantity").val());
+        }
+    });
+    
+  })
+ 
+  $(".upoq").on("click",function(){
+    $(".uponequantity").attr("value",localStorage.getItem('key'));
+    var producecode= $(this).parent().find(".pcode").val();
+    
+    $.ajax({
+        type: "POST",
+        url: "/uponequantity/",
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        data: {
+        "producecode":$(this).parent().find(".pcode").val(),
+        "useremail":$(".uponequantity").val(),
+      },
+        success: function() {
+          //window.location.assign('/basket/'+"?b="+$(".uponequantity").val());
+          $.ajax({
+                  url:'/basket/'+"?b="+$(".uponequantity").val(),
+                  headers: { "X-CSRFToken": '{{csrf_token}}' },
+                  type:'POST',
+                  success:function(result){
+                      $('.basket').html(result);
+          }
+          });
+        }
+    
+        
+    });
+    
+
+  })
+
+  $('.downoq').on("click",function(){
+    $(".downonequantity").attr("value",localStorage.getItem('key'));
+    console.log($(this).parent().find(".pcode").val());
+    $.ajax({
+        type: "POST",
+        url: "/downonequantity/",
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        data: {"producecode":$(this).parent().find(".pcode").val(),
+        "useremail":$(".downonequantity").val(),
+      },
+        success: function() {
+          window.location.assign('/basket/'+"?b="+$(".uponequantity").val());
+        }
+    });
+    
+
+
+
+
+  })
+  function vericek(){
+		
+			$.ajax({
+				url:'/basket/',
+				type:'GET',
+				success:function(result){
+					$('.basket').html(result);
+        }
+		
+		});
+	}//setInterval(vericek,10)
+
+
+
+
+  $(".clearbb").on("click",function(){
+    $(".uemail").attr("value",localStorage.getItem('key'));
+    $.ajax({
+        type: "POST",
+        url: "/clearBasket/",
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        data: {"useremail":$(".uemail").val(),
+      },
+        success: function() {
+          window.location.assign('/basket/'+"?b="+$(".uponequantity").val());
+        }
+    });
+    
+  })
+
+</script>
+        
+
+{% endblock %}

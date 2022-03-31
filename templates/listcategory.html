@@ -1,0 +1,40 @@
+{% extends "fix-parts/layout.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+    <div class="row">
+        {% for per in producelist %}
+    <div class="col-sm-6 col-lg-4 mb-4">
+   <div class="block-4 text-center border">
+     <figure class="block-4-image">
+       <a href="/detailproduce/?p={{per.produceCode}}"><img src="{{per.produceImageURL}}" alt="Image placeholder" class="img-fluid" style="width:250px;height:250px;"></a>
+     </figure>
+     <div class="block-4-text p-4">
+       <h3><a href="/detailproduce/?p={{per.produceCode}}" style="color:#000000;text-decoration:none;">{{per.produceName}}</a></h3>
+       <p class="mb-0">{{per.produceDescription}}</p>
+       <p class="text-primary font-weight-bold">{{per.producePrice}} ₺</p>
+     </div>
+   </div>
+    </div>{% endfor %}
+    
+    </div>
+    </div>
+   
+
+
+
+
+
+
+
+</body>
+</html>
+{% endblock %}

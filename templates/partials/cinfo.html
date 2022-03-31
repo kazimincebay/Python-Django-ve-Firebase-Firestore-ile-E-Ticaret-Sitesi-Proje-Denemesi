@@ -1,0 +1,11 @@
+deneme
+{% for company in companyinfolist %}
+<a href="" class="text-decoration-none">
+    <img src="{{company.companyLogo}}" alt="" />
+</a>
+<p>{{ci.companyDescription}}</p>
+<p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>{{company.companyAdress}}</p>
+<p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>{{ci.companyEmail}}</p>
+<p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>{{ci.companyPhoneNumber}}</p>
+
+{% endfor %}

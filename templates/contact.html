@@ -1,0 +1,62 @@
+{% extends "fix-parts/layout.html" %}
+{% load static %}
+{% block content%}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold mb-3">İletişim</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="{% url 'home' %}">Anasayfa</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">İletişim</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<!-- Contact Start -->
+<div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2">Aklınızdaki Sorular İçin Bizimle İletişime Geçin</span></h2>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4 mb-5 ">
+            <div class="contact-form">
+                <form action="/addContact/" method="post" style="text-align:center;">
+                    {% csrf_token %}
+                    <div class="control-group">
+                        <input type="text" class="form-control" name="namesurname" id="name" placeholder="Adınız Soyadınız"
+                            required="required" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="E-Posta Adresiniz"
+                            required="required"/>
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="Konu"
+                            required="required"  />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <textarea class="form-control" rows="6" id="message" name="message" placeholder="Mesajınız"
+                            required="required"></textarea>
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Mesajı Gönder</button>
+                    </div>
+                </form>
+                <div class="col-lg-4"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact End -->
+
+
+
+
+
+{% endblock %}

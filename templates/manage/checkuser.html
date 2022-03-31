@@ -1,0 +1,42 @@
+{% extends "manage/fix-parts/layout.html" %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <table class="mx-auto border-4">
+        <tr>
+        <th>Id</th>
+        <th>Adı</th>
+        <th>Soyadı</th>
+        <th>Mail Adresi</th>
+        <th>Telefon Numarası</th>
+        </tr>
+        {% for user in userlist%}
+        <tr>
+            <td>{{user.userid}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.surname}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phonenumber}}</td>
+            
+        
+
+
+        </tr>   
+        {% endfor %}
+    </table>
+
+
+
+
+
+</body>
+</html>
+ {% endblock %}

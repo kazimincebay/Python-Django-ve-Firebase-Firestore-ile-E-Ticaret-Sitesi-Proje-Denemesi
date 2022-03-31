@@ -1,0 +1,72 @@
+{% extends "manage/fix-parts/layout.html" %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Listeleme</title>
+    <style>
+        table tr,td,th{
+            border: 2px solid #000;
+            
+        }
+    </style>
+</head>
+<body>
+    {% if msg %}
+       <p class="text-center">{{ msg }}</p>
+      {% endif %}   <br>
+    {% csrf_token %}
+      <div style="text-align:center;" >
+    <table class="mx-auto">
+        <tr>
+            <th>Ürün Resmi</th>
+            <th>Ürün Id</th>
+            <th>Ürün Adı</th>
+            <th>Ürün Kategorisi</th>
+            <th>Ürün Stok Sayısı</th>
+            <th>Ürün Durumu</th>
+            <th>Ürün Fiyatı</th>
+            <th>Ürün Açıklaması</th>
+            <th>Güncelle</th>
+
+
+        </tr>
+ 
+    
+{% for per in productlist %}
+<tr>
+    <td><img class="img-fluid mx-auto" src="{{per.produceImageURL}}" alt="produceImage" style="width:100px;height:100px;"></td>
+    <td>{{per.produceCode}}</td>
+    <td>{{per.produceName}}</td>
+    <td>{{per.produceCategory}}</td>
+    <td>{{per.produceStock}}</td>
+    <td>{{per.produceStatus}}</td>
+    <td>{{per.producePrice}} ₺</td>
+    <td>{{per.produceDescription}}</td>
+    <td><form action="/manage/updateproduce/" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="produceimage" value="{{per.produceImageURL}}">
+        <input type="hidden" name="producecode" value="{{per.produceCode}}">  
+        <input type="hidden" name="producename" value="{{per.produceName}}"> 
+        <input type="hidden" name="producecategory" value="{{per.produceCategory}}"> 
+        <input type="hidden" name="producestatus" value="{{per.produceStatus}}"> 
+        <input type="hidden" name="producestock" value="{{per.produceStock}}"> 
+        <input type="hidden" name="produceprice" value="{{per.producePrice}}"> 
+        <input type="hidden" name="producedescription" value="{{per.produceDescription}}"> 
+        <input type="submit" value="Güncelle" class="btn btn-warning">
+    </form></td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+
+
+
+    
+</body>
+</html>
+{% endblock %}
